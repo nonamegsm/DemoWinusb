@@ -1,0 +1,78 @@
+//Descriptors for WinUSB demo for the VS1000B
+
+const u_int32 mySerialNumber = 0x0000001;
+
+const u_int16  myDeviceDescriptor [] = "\p" //Descriptor as Packed String 
+   "\x12" // Length
+   "\x01" // Descriptor type: Device
+   "\x10\x01" //USB Specification Release Number 
+   "\x00" // Class: Undefined
+   "\x00" // Subclass: Undefined
+   "\x00" // Protocol: Undefined
+   "\x40" // Endpoint 0 Packet Max Size: 64 bytes (good arbitrary value)
+   "\xfb\x19" // Vendor Id 0x19fb = VLSI Solution Oy
+   "\xe0\xee" // Product Id 0xffe0 (eee0-eeef = VLSI Customer Testing)
+   "\x00\x00" // Release 0x0000
+   "\x01" // Manufacturer String Index
+   "\x02" // Model String Index
+   "\x03" // Serial Number String Index
+   "\x01" // Number of configurations
+   ;
+
+#define CONFIG_DESC_SIZE 32
+u_int16 myConfigurationDescriptor[] = "\p"
+  // ______Configuration_descriptor____ at offset 0
+  "\x09" // Length: 9 bytes // (9)
+  "\x02" // Descriptor type: Configuration // (2)
+  "\x20\x00" // Total Size: 32 (0x0020) bytes
+  "\x01" // Number of Interfaces: 1 
+  "\x01" // This configuration is configuration 1
+  "\x00" // Configuration String Index: None
+  "\x80" // Attributes
+  "\x32" // Power
+
+  "\x09" // Length: 9 bytes
+  "\x04" // Descriptor type: Interface
+  "\x00" // This interface is interface 0.
+  "\x00" // This alternate setting is alternate setting 0.
+  "\x02" // This interface setting uses 2 endpoints.
+  "\x00\x00\x00" // Class, Subclass and Protocol undefined.
+  "\x00" // This interface string index: None
+
+  "\x07" // Length: 7 bytes
+  "\x05" // Descriptor type: Endpoint
+  "\x81" // Endpoint address: 1 IN
+  "\x03" // Transfer type: Interrupt
+  "\x00\x01" // Max packet size: 0x0100 (256) bytes
+  "\x01" // Polling interval: 1
+
+  "\x07" // Length: 7 bytes
+  "\x05" // Descriptor type: Endpoint
+  "\x01" // Endpoint address: 1 OUT
+  "\x02" // Transfer type: Bulk (2) Interrupt (3)
+  "\x80\x00" // Max packet size: 128 bytes
+  "\x01" // Polling interval: 1
+  ;
+
+
+#define VENDOR_NAME_LENGTH 6
+const u_int16 myVendorNameStr[] = {
+  ((VENDOR_NAME_LENGTH * 2 + 2)<<8) | 0x03,
+  'M'<<8,'y'<<8,'C'<<8,'o'<<8,'r'<<8,'p'<<8};
+
+#define MODEL_NAME_LENGTH 6
+const u_int16 myModelNameStr[] = {
+  ((MODEL_NAME_LENGTH * 2 + 2)<<8) | 0x03,
+  'G'<<8,'a'<<8,'d'<<8,'g'<<8,'e'<<8,'t'<<8};
+
+#define SERIAL_NUMBER_LENGTH 12
+u_int16 mySerialNumberStr[] = {
+  ((SERIAL_NUMBER_LENGTH * 2 + 2)<<8) | 0x03,
+  '1'<<8, // You can
+  '2'<<8, // put any
+  '3'<<8, // numbers you
+  '4'<<8, // like here (over the '1' '2' '3' and '4')
+  0x3000, 0x3000, 0x3000, 0x3000, // Last 8 digits of serial 
+  0x3000, 0x3000, 0x3000, 0x3000  // number will be calculated here
+};
+

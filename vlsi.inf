@@ -1,0 +1,95 @@
+; ================ Version section =================
+ 
+[Version]
+Signature = "$Windows NT$"
+Class = VlsiTestDeviceClass
+ClassGuid = {122C12B3-5902-4394-B038-AC82D31388BA}
+Provider = %ProviderName%
+DriverVer = 05/22/2007, 6.0.1.0
+ 
+; ========== Manufacturer/Models sections =========== 
+
+[Manufacturer] 
+%ProviderName% = MyDevice,NTx86,NTia64,NTamd64 
+
+[MyDevice.NTx86] 
+%DeviceDesc% =USB_Install, USB\VID_19FB&PID_EEE0
+
+[MyDevice.NTamd64] 
+%DeviceDesc% =USB_Install, USB\VID_19FB&PID_EEE0
+
+
+ 
+; ================== Installation ==================
+
+[ClassInstall]
+AddReg=ClassAddReg
+
+[ClassInstall32]
+AddReg=ClassAddReg
+
+[ClassAddReg]
+HKR,,,,"%ClassName%"
+HKR,,Icon,,-28
+ 
+[USB_Install]
+Include = WinUSB.inf 
+Needs = WinUSB.NT 
+ 
+[USB_Install.Services]
+Include = WinUSB.inf
+AddService = WinUSB, 0x00000002, WinUSB_ServiceInstall
+ 
+[WinUSB_ServiceInstall]
+DisplayName   = %WinUSB_SvcDesc%
+ServiceType   = 1
+StartType     = 3
+ErrorControl  = 1
+ServiceBinary = %12%\WinUSB.sys
+ 
+[USB_Install.Wdf]
+KmdfService = WinUSB, WinUSB_Install
+ 
+[WinUSB_Install]
+KmdfLibraryVersion = 1.5
+ 
+[USB_Install.HW]
+AddReg = Dev_AddReg
+ 
+[Dev_AddReg]
+HKR,,DeviceInterfaceGUIDs,0x00010000,"{F53EB9CA-9486-47CB-8D79-5F1E1CD31845}"
+  
+[USB_Install.CoInstallers]
+AddReg = CoInstallers_AddReg
+CopyFiles = CoInstallers_CopyFiles
+ 
+[CoInstallers_AddReg]
+HKR, , CoInstallers32, 0x00010000, "WinUSBCoInstaller.dll","WdfCoInstaller01005.dll, WdfCoInstaller"
+ 
+[CoInstallers_CopyFiles]
+WinUSBCoInstaller.dll
+WdfCoInstaller01005.dll
+
+[SourceDisksNames]
+1 = %MediaDescription%
+ 
+[SourceDisksFiles]
+WinUSBCoInstaller.dll = 1, x86
+WdfCoInstaller01005.dll = 1, x86
+ 
+[SourceDisksFiles.amd64]
+WinUSBCoInstaller.dll = 1, amd64
+WdfCoInstaller01005.dll = 1, amd64
+ 
+[DestinationDirs]
+CoInstallers_CopyFiles = 11
+
+ 
+; ==================== Strings =====================
+ 
+[Strings]
+ClassName="Test And Debug Modules"
+ProviderName = "VLSI Solution Oy"
+DeviceDesc="VS_DSP Debug Interface"
+MediaDescription  = "WDF/WinUSB 1.5 Driver for WinXP/Vista"
+WinUSB_SvcDesc = "WinUSB Driver Service"
